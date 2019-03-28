@@ -6,6 +6,8 @@ Performs queries at [Stock Market Trading API](https://stock-market-trading-api.
 
 For the pages, the project utilizes the facilities of [Thymeleaf](https://www.thymeleaf.org/)
 
+Available for testins at <heroku link>
+
 # stock-market-trading-api
 
 Methods:
