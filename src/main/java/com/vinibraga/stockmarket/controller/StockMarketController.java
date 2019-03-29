@@ -1,6 +1,8 @@
 package com.vinibraga.stockmarket.controller;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -12,7 +14,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.google.gson.Gson;
 import com.vinibraga.stockmarket.entity.AnalysisType;
+import com.vinibraga.stockmarket.entity.Candle;
 import com.vinibraga.stockmarket.entity.ResearchData;
 import com.vinibraga.stockmarket.entity.Stock;
 import com.vinibraga.stockmarket.entity.StockHistory;
@@ -60,7 +64,16 @@ public class StockMarketController {
     		stockHistory = service.getHistory(researchData.getSymbol());
     		stockIntraday = new StockIntraday();
     	}   	
-        model.addAttribute("stockHistory", stockHistory);
+    	
+    	List<Candle> history = stockHistory
+    			.getHistory()
+    			.values()
+    			.stream()
+    			.collect(Collectors.toList());
+    	
+    	Gson gson = new Gson();
+
+        model.addAttribute("stockHistory", gson.toJson(history));
         model.addAttribute("stockIntraday", stockIntraday);
         return "stock";
     }
