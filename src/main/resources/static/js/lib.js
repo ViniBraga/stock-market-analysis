@@ -1,5 +1,9 @@
 let stockData = [];
 
+
+
+
+
 //
 //let stockData = [ {
 //    "zonedDateTime": "2011-08-01",
@@ -328,13 +332,18 @@ let stockData = [];
 //  }];
 
 
-const populateData = (data) => {
+var populateData = function(data) {
 	console.log(data);
 	stockData = data;
 }
 
 window.onload = () => {
 
+	var stockIntraday = document.getElementById("stockIntraday");
+	if(stockIntraday.value) {
+		populateData(stockIntraday.value);
+	}
+	
 	//Themes begin
 	am4core.useTheme(am4themes_animated);
 	// Themes end
@@ -342,7 +351,7 @@ window.onload = () => {
 	var chart = am4core.create("chartdiv", am4charts.XYChart);
 	chart.paddingRight = 20;
 
-	chart.dateFormatter.inputDateFormat = "yyyy-MM-dd";
+	chart.dateFormatter.inputDateFormat = "yyyy-MM-dd HH:mm:ss";
 
 	var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
 	dateAxis.renderer.grid.template.location = 0;
@@ -351,7 +360,7 @@ window.onload = () => {
 	valueAxis.tooltip.disabled = true;
 
 	var series = chart.series.push(new am4charts.CandlestickSeries());
-	series.dataFields.dateX = "zonedDateTime";
+	series.dataFields.dateX = "date";
 	series.dataFields.valueY = "close";
 	series.dataFields.openValueY = "open";
 	series.dataFields.lowValueY = "low";
@@ -363,7 +372,7 @@ window.onload = () => {
 
 	// a separate series for scrollbar
 	var lineSeries = chart.series.push(new am4charts.LineSeries());
-	lineSeries.dataFields.dateX = "zonedDateTime";
+	lineSeries.dataFields.dateX = "date";
 	lineSeries.dataFields.valueY = "close";
 	// need to set on default state, as initially series is "show"
 	lineSeries.defaultState.properties.visible = false;

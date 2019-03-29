@@ -65,16 +65,19 @@ public class StockMarketController {
     		stockIntraday = new StockIntraday();
     	}   	
     	
-    	List<Candle> history = stockHistory
-    			.getHistory()
+    	List<Candle> intraday = stockIntraday
+    			.getIntraday()
     			.values()
     			.stream()
     			.collect(Collectors.toList());
     	
     	Gson gson = new Gson();
-
-        model.addAttribute("stockHistory", gson.toJson(history));
-        model.addAttribute("stockIntraday", stockIntraday);
+    	String json = gson.toJson(intraday);
+    	System.out.println(json);
+    	
+    	
+        //model.addAttribute("stockHistory", stockIntraday);
+        model.addAttribute("stockIntraday", json);
         return "stock";
     }
 	
