@@ -8,6 +8,8 @@ For the pages, the project utilizes the facilities of [Thymeleaf](https://www.th
 
 Available for testins at https://stock-market-analysis-vb.herokuapp.com
 
+PS: It will be migrated to a restful application containing a Java api and the frontend developed in React.
+
 # stock-market-trading-api
 Available at https://stock-market-trading-api.herokuapp.com
 
