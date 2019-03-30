@@ -9,7 +9,6 @@ public class Candle {
 	private String close;
 	private String high;
 	private String low;
-	private String volume;
 	private String date; 
 	
 }

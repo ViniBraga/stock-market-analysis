@@ -5,7 +5,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-    <p>Get your greeting <a href="/greeting">here</a></p>
-    <p>Get your stock market application <a href="/stock">here</a></p>
+<!--     <p>Get your greeting <a href="/greeting">here</a></p> -->
+<!--     <p>Get your stock market application <a href="/stock">here</a></p> -->
+<script>
+	var currentLocation = window.location.href;
+	if(currentLocation.slice(-1) != "/") {
+		currentLocation += "/";
+	}
+	window.location = currentLocation + "stock";
+</script>
 </body>
 </html>

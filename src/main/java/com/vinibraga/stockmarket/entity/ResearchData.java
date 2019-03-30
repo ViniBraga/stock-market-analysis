@@ -7,5 +7,6 @@ public class ResearchData {
 
 	private String symbol;
 	private AnalysisType analysisType;
+	private Integer lastYears;
 	
 }

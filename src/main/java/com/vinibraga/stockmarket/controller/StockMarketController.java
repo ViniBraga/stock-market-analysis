@@ -1,6 +1,7 @@
 package com.vinibraga.stockmarket.controller;
 
-import java.util.Arrays;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,8 @@ import lombok.Getter;
 @RequestMapping("/stock")
 public class StockMarketController {
 
+	final static int FETCH_LAST_YEARS = 1;
+	
 	@Autowired
 	private StockMarketService service;
 	
@@ -42,43 +45,58 @@ public class StockMarketController {
 	@Getter
 	private StockInfo stockInfo;
 	
+	private List<Stock> stocks;
+	
 	@GetMapping
 	public String loadStock(Model model) {
+		this.stocks = service.fetchList();
 		model.addAttribute("researchData", new ResearchData()); 
-		List<Stock> stocks = service.getList();
 		model.addAttribute("stocks", stocks);
 		model.addAttribute("stockInfo", new StockInfo());
-		model.addAttribute("stockHistory", new StockHistory());
-        model.addAttribute("stockIntraday", new StockIntraday());
+		model.addAttribute("stockHistory", null);
+        model.addAttribute("stockIntraday", null);
 		return "stock";
 	}
 	
     @PostMapping
     public String loadStock(Model model, @Valid @ModelAttribute ResearchData researchData) {
-    	stockInfo = service.getInfo(researchData.getSymbol());
+    	Gson gson = new Gson();
+    	List<Candle> intraday = new ArrayList<>();
+    	List<Candle> history = new ArrayList<>();
+    	List<Candle> filteredHistory = new ArrayList<>();  	
+    	stockInfo = service.fetchInfo(researchData.getSymbol());
+    	researchData.setAnalysisType(AnalysisType.HISTORY);	
     	model.addAttribute("stockInfo", stockInfo);
     	if(researchData.getAnalysisType().equals(AnalysisType.INTRADAY)) {
-    		stockIntraday = service.getIntraday(researchData.getSymbol());
-    		stockHistory = new StockHistory();
+    		stockIntraday = service.fetchIntraday(researchData.getSymbol());
+        	intraday = stockIntraday.getIntraday().values().stream().collect(Collectors.toList());
     	} else {
-    		stockHistory = service.getHistory(researchData.getSymbol());
-    		stockIntraday = new StockIntraday();
-    	}   	
-    	
-    	List<Candle> intraday = stockIntraday
-    			.getIntraday()
-    			.values()
-    			.stream()
-    			.collect(Collectors.toList());
-    	
-    	Gson gson = new Gson();
-    	String json = gson.toJson(intraday);
-    	System.out.println(json);
-    	
-    	
-        //model.addAttribute("stockHistory", stockIntraday);
-        model.addAttribute("stockIntraday", json);
+    		stockHistory = service.fetchHistory(researchData.getSymbol());
+    		history = stockHistory.getHistory().values().stream().collect(Collectors.toList());
+    		filteredHistory = this.filterLastFiveYears(history, FETCH_LAST_YEARS);
+    	}   	   	
+        model.addAttribute("stockHistory", gson.toJson(filteredHistory));
+        model.addAttribute("stockIntraday", gson.toJson(intraday));
+        model.addAttribute("researchData", researchData); 
+		model.addAttribute("stocks", stocks);
         return "stock";
     }
+
+	private List<Candle> filterLastFiveYears(List<Candle> history, Integer lastYears) {
+		return history.stream().filter(h -> this.belongsToLastYears(h.getDate(), lastYears)).collect(Collectors.toList());
+	}
+
+	private boolean belongsToLastYears(String date,  Integer lastYears) {
+		boolean belongs = false;
+		LocalDate now = LocalDate.now();
+		int currentYear = now.getYear();
+		for (int i = 0; i < lastYears; i++) {
+			Integer year = currentYear - i;
+			if(date.contains(year.toString())) {
+				belongs = true;
+			}
+		}
+		return belongs;
+	}
 	
 }

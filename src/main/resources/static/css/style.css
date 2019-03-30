@@ -1,3 +1,15 @@
+html, body { height: 100%; }
+body { 
+    opacity: 1;
+    transition: 1s opacity;
+    background-color: #23241f
+}
+
+body.fade-out {
+    opacity: 0;
+    transition: none;
+}
+
 .text-center {
     text-align: center !important;
 }
@@ -8,7 +20,7 @@
     flex-direction: column;
     min-width: 0;
     word-wrap: break-word;
-    background-color: #fff;
+    background-color: #2F4F4F;
     background-clip: border-box;
     border: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: 0.25rem;
@@ -28,6 +40,12 @@
 
 .title {
     margin-bottom: 0.75rem;
+    font-size: 30px;
+    color: #FFFAF0;
+}
+
+.text {
+	color: #FFFAF0;
 }
 
 
@@ -37,7 +55,52 @@
 }
 
 
+select#soflow, select#soflow-color {
+   -webkit-appearance: button;
+   -webkit-border-radius: 2px;
+   -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+   -webkit-padding-end: 20px;
+   -webkit-padding-start: 2px;
+   -webkit-user-select: none;
+   background-image: url(http://i62.tinypic.com/15xvbd5.png), -webkit-linear-gradient(#FAFAFA, #F4F4F4 40%, #E5E5E5);
+   background-position: 97% center;
+   background-repeat: no-repeat;
+   border: 1px solid #AAA;
+   color: #555;
+   font-size: inherit;
+   margin: 20px;
+   overflow: hidden;
+   padding: 5px 10px;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   width: 100px;
+}
 
+select#soflow-color {
+   color: #fff;
+   background-image: url(http://i62.tinypic.com/15xvbd5.png), -webkit-linear-gradient(#779126, #779126 40%, #779126);
+   background-color: #779126;
+   -webkit-border-radius: 20px;
+   -moz-border-radius: 20px;
+   border-radius: 20px;
+   padding-left: 15px;
+}
+
+.button {
+   background-color: steelblue;
+   border: none;
+   color: white;
+   padding: 6px 20px;
+   text-align: center;
+   text-decoration: none;
+   display: inline-block;
+   font-size: 16px;
+}
+
+.info-style {
+	font-size: 30px;
+    color: lightgoldenrodyellow;
+}
 
 
 .text-muted {
